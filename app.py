@@ -1,9 +1,12 @@
-from random import random
+from random import random, randrange
+from flask.wrappers import Request
 import requests
 from threading import Thread
 from flask import request, render_template, Flask
 import json
 from waitress import serve
+import time
+import string
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -15,9 +18,48 @@ app.config['SESSION_TYPE'] = 'filesystem'
 def index():
     return render_template("index.html")
 
+# @app.route("/image/")
+# def image():
+#     Request.form
+
+@app.route("/beta")
+def beta():
+    return render_template("index_beta.html")
+
+@app.route("/api/beta")
+def apiBeta():
+    return str(json.dumps(requestFastBeta(25)))
+
 @app.route("/api")
 def api():
-    return str(json.dumps(requestFast(49)))
+    return str(json.dumps(requestFast(50)))
+
+
+def randIMGBeta(rets):
+    terms = string.ascii_letters + string.digits
+    for a in range(20):
+        randList = str()
+        for a in range(6):
+            randList += terms[randrange(0,62)]
+        
+        link = "https://i.imgur.com/" + randList + ".jpeg"
+        ress = requests.get(link).url
+
+        if ress != "https://i.imgur.com/removed.png":
+            if ress != "https://imgur.com/" + randList:
+                rets.append(ress)
+
+def requestFastBeta(itr):
+    threads = list()
+    rets = list()
+    for i in range(itr):
+        x = Thread(target=randIMGBeta, args=(rets,))
+        threads.append(x)
+        x.start()
+    for index, thread in enumerate(threads):
+        thread.join()
+
+    return rets
 
 
 def randIMG(ret):
@@ -53,5 +95,3 @@ def requestFast(itr):
 if __name__ == "__main__":
     serve(app, host='0.0.0.0', port=8080, threads=2)
 
-#requestFast(100)
-#input()
