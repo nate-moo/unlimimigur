@@ -1,31 +1,14 @@
 from random import random
 import requests
 from threading import Thread
-from flask import request, render_template, redirect, url_for, session, Flask
+from flask import request, render_template, Flask
 import json
-from concurrent.futures import ThreadPoolExecutor
 from waitress import serve
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
-
-
-class ThreadWithReturnValue(Thread):
-    def __init__(self, group=None, target=None, name=None,
-                 args=(), kwargs={}, Verbose=None):
-        Thread.__init__(self, group, target, name, args, kwargs)
-        self._return = None
-    def run(self):
-        print(type(self._target))
-        if self._target is not None:
-            self._return = self._target(*self._args,
-                                                **self._kwargs)
-    def join(self, *args):
-        Thread.join(self, *args)
-        return self._return
-
 
 # route for main page
 @app.route("/")
@@ -34,14 +17,6 @@ def index():
 
 @app.route("/api")
 def api():
-    # with ThreadPoolExecutor() as executor:
-    #     future = [executor.submit(randIMG) for x in range(10)]
-    #     returnVal = [f.result() for f in future]
-    #     return str(json.dumps(returnVal))
-    # que = Queue()
-    # requestFast(10)
-    # #randIMG()
-    # result = que.get()
     return str(json.dumps(requestFast(49)))
 
 
@@ -57,7 +32,7 @@ def randIMG(ret):
     img = requests.get(image).url
     if img != "https://i.imgur.com/removed.png":
         imgList = img.strip()
-        print(imgList)
+        #print(imgList)
         ret.append(imgList)
     else:
         randIMG(ret)
