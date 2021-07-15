@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinimgur</title>
+</head>
+<body>
+    <h1>
+        Hello World
+    </h1>
+    <table>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+    <script>
+var range = n => [...Array(n).keys()]
+async function load() {
+    while (true) {
+        for (var a in range(6)) {
+            let links = await fetch("/api").then((res) => res.json());
+            let tr = document.createElement("tr");
+            for (var link in links) {
+                var image = document.createElement("img");
+                var button = document.createElement("a");
+                var split = links[link].split("s.jpg")[0]
+                image.src = links[link];
+                image.width = "200";
+                image.height = "200";
+                button.href = split + ".png";
+                button.target = "_blank";
+                button.appendChild(image);
+                tr.appendChild(button);
+            };
+            document.getElementById("tbody").appendChild(tr);
+        }
+        await setTimeout(() => {console.log('1 second finished!')}, 1000);
+    }
+    console.log(links);
+    // var j = links.json();
+    // console.log("resolved");
+    // console.log(j);
+}
+load();
+    </script>
+</body>
+</html>
