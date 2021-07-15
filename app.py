@@ -7,6 +7,7 @@ from flask_cors import CORS
 import json
 from queue import Queue
 from concurrent.futures import ThreadPoolExecutor
+from waitress import serve
 
 que = Queue()
 app = Flask(__name__)
@@ -78,6 +79,9 @@ def requestFast(itr):
         thread.join()
 
     return rets
+
+if __name__ == "__main__":
+    serve(app, host='0.0.0.0', port=8080, threads=2)
 
 #requestFast(100)
 #input()
