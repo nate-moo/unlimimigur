@@ -5,36 +5,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinimgur</title>
+    <style>
+        .float {
+            top: 0px;
+            right: 20px;
+            position: fixed;
+            z-index: 2;
+            background-color: gray;
+        }
+    </style>
 </head>
 <body>
+    <h3 id="floater" class="float">
+        
+    </h3>
     <h1>
-        Hello World
+        Unlimigur
     </h1>
-    <table>
-        <tbody id="tbody">
-        </tbody>
-    </table>
+        <table>
+            <tbody id="tbody">
+            </tbody>
+        </table>
     <script>
 var range = n => [...Array(n).keys()]
 async function load() {
+    var tr = document.createElement("tr");
     while (true) {
-        for (var a in range(6)) {
-            let links = await fetch("/api").then((res) => res.json());
-            let tr = document.createElement("tr");
-            for (var link in links) {
-                var image = document.createElement("img");
-                var button = document.createElement("a");
-                var split = links[link].split("s.jpg")[0]
-                image.src = links[link];
-                image.width = "200";
-                image.height = "200";
-                button.href = split + ".png";
-                button.target = "_blank";
-                button.appendChild(image);
-                tr.appendChild(button);
-            };
-            document.getElementById("tbody").appendChild(tr);
-        }
+        // for (var a in range(6)) {
+        let start = new Date().getTime();
+        let links = await fetch("/api").then((res) => res.json());
+        let elapsed = new Date().getTime() - start;
+        document.getElementById("floater").innerText = elapsed / 1000 + "s"; 
+        for (var link in links) {
+            var image = document.createElement("img");
+            var button = document.createElement("a");
+            var split = links[link].split("s.jpg")[0]
+            image.src = links[link];
+            image.width = "200";
+            image.height = "200";
+            button.href = split + ".png";
+            button.target = "_blank";
+            button.appendChild(image);
+            tr.appendChild(button);
+        };
+        document.getElementById("tbody").appendChild(tr);
+        // }
         await setTimeout(() => {console.log('1 second finished!')}, 1000);
     }
     console.log(links);
