@@ -3,15 +3,11 @@ from typing import List
 import requests
 from threading import Thread
 from flask import request, render_template, redirect, url_for, session, Flask
-from flask_cors import CORS
 import json
-from queue import Queue
 from concurrent.futures import ThreadPoolExecutor
 from waitress import serve
 
-que = Queue()
 app = Flask(__name__)
-CORS(app)
 app.config["DEBUG"] = True
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
