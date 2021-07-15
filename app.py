@@ -1,5 +1,4 @@
 from random import random
-from typing import List
 import requests
 from threading import Thread
 from flask import request, render_template, redirect, url_for, session, Flask
