@@ -29,19 +29,19 @@
             </tbody>
         </table>
     <script>
-var range = n => [...Array(n).keys()]
+var range = n => [...Array(n).keys()];
+var tr = document.createElement("tr");
 async function load() {
-    var tr = document.createElement("tr");
-    while (true) {
+    // while (true) {
         // for (var a in range(6)) {
         let start = new Date().getTime();
         let links = await fetch("/api").then((res) => res.json());
         let elapsed = new Date().getTime() - start;
         document.getElementById("floater").innerText = elapsed / 1000 + "s"; 
         for (var link in links) {
-            var image = document.createElement("img");
-            var button = document.createElement("a");
-            var split = links[link].split("s.jpg")[0]
+            let image = document.createElement("img");
+            let button = document.createElement("a");
+            let split = links[link].split("s.jpg")[0]
             image.src = links[link];
             image.width = "200";
             image.height = "200";
@@ -52,14 +52,25 @@ async function load() {
         };
         document.getElementById("tbody").appendChild(tr);
         // }
-        await setTimeout(() => {console.log('1 second finished!')}, 1000);
-    }
-    console.log(links);
+        // await setTimeout(() => {console.log('1 second finished!')}, 1000);
+    // }
+    // console.log(links);
     // var j = links.json();
     // console.log("resolved");
     // console.log(j);
 }
-load();
+
+const globalData = {
+  done: true
+}
+
+setInterval(async () => {
+  if (globalData.done) {
+    globalData.done = false
+    await load()
+    globalData.done = true
+  }
+}, 2000)
     </script>
 </body>
 </html>

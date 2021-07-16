@@ -6,6 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinimgur</title>
     <style>
+        /* .zoom {
+            padding: 50px;
+            background-color: green;
+            transition: transform .2s; Animation
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        } */
+        .zoom:hover {
+            transform: scale(1.5);
+        }
         .float {
             top: 0px;
             right: 20px;
@@ -24,43 +35,86 @@
         <button> <a href="/beta">Unlimigur Beta</a> </button>
     </h1>
 
-        <table>
+        <table style="padding-left: 60px;">
             <tbody id="tbody">
             </tbody>
         </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-var range = n => [...Array(n).keys()]
+var range = n => [...Array(n).keys()];
+const tr = document.createElement("tr");
 async function load() {
-    var tr = document.createElement("tr");
-    while (true) {
+    // while (true) {
         // for (var a in range(6)) {
         let start = new Date().getTime();
         let links = await fetch("/api/beta").then((res) => res.json());
         let elapsed = new Date().getTime() - start;
         document.getElementById("floater").innerText = elapsed / 1000 + "s"; 
         for (var link in links) {
-            var image = document.createElement("img");
-            var button = document.createElement("a");
+            let de = document.createAttribute("data-enlargeable");
+            let image = document.createElement("img");
+            let button = document.createElement("a");
             //var split = links[link].split("s.jpg")[0]
             image.src = links[link];
-            image.style = "object-fit: contain;"
+            image.className = "zoom";
+            image.style = "object-fit: contain;";
+            // image.attributes = "data-enlargeable";
             image.width = "300";
             image.height = "300";
-            button.href = links[link];
-            button.target = "_blank";
-            button.appendChild(image);
-            tr.appendChild(button);
+            image.setAttributeNode(de);
+            // button.href = links[link];
+            // button.target = "_blank";
+            // button.appendChild(image);
+            tr.appendChild(image);
         };
         document.getElementById("tbody").appendChild(tr);
+        $('img[data-enlargeable]').addClass('img-enlargeable').click(function() {
+            var src = $(this).attr('src');
+            var modal;
+
+            function removeModal() {
+                modal.remove();
+                $('body').off('keyup.modal-close');
+            }
+            modal = $('<div>').css({
+                background: 'RGBA(0,0,0,.5) url(' + src + ') no-repeat center',
+                backgroundSize: 'contain',
+                width: '100%',
+                height: '100%',
+                position: 'fixed',
+                zIndex: '10000',
+                top: '0',
+                left: '0',
+                cursor: 'zoom-out'
+            }).click(function() {
+                removeModal();
+            }).appendTo('body');
+            //handling ESC
+            $('body').on('keyup.modal-close', function(e) {
+                if (e.key === 'Escape') {
+                removeModal();
+                }
+            });
+        });
         // }
-        await setTimeout(() => {console.log('1 second finished!')}, 1000);
-    }
-    console.log(links);
+        // await setTimeout(() => {console.log('1 second finished!')}, 1000);
+    // }
+    // console.log(links);
     // var j = links.json();
     // console.log("resolved");
     // console.log(j);
 }
-load();
+const globalData = {
+  done: true
+}
+
+setInterval(async () => {
+  if (globalData.done) {
+    globalData.done = false
+    await load()
+    globalData.done = true
+  }
+}, 2000)
     </script>
 </body>
 </html>
