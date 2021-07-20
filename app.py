@@ -22,13 +22,17 @@ def index():
 # def image():
 #     Request.form
 
+@app.route("/alpha")
+def alpha():
+    return render_template("index_alpha.html")
+
 @app.route("/beta")
 def beta():
     return render_template("index_beta.html")
 
 @app.route("/api/beta")
 def apiBeta():
-    return str(json.dumps(requestFastBeta(25)))
+    return str(json.dumps(requestFastBeta(50)))
 
 @app.route("/api")
 def api():
@@ -43,11 +47,15 @@ def randIMGBeta(rets):
             randList += terms[randrange(0,62)]
         
         link = "https://i.imgur.com/" + randList + ".jpeg"
-        ress = requests.get(link).url
+        ress = requests.head(link).status_code
 
-        if ress != "https://i.imgur.com/removed.png":
-            if ress != "https://imgur.com/" + randList:
-                rets.append(ress)
+        if ress == 200:
+            rets.append(link)
+
+        # if ress != "https://i.imgur.com/removed.png":
+        #     if ress != "https://imgur.com/" + randList:
+        #         rets.append(ress)
+        #         # print(ress)
 
 def requestFastBeta(itr):
     threads = list()
