@@ -79,9 +79,10 @@ def randIMG(ret):
         length = 7
     id = str(random())[2:(length+2)]
     image = "https://i.imgur.com/" + id + "s.jpg" 
-    img = requests.get(image).url
-    if img != "https://i.imgur.com/removed.png":
-        imgList = img.strip()
+    img = requests.head(image).status_code
+    #if img != "https://i.imgur.com/removed.png":
+    if img == 200:
+        imgList = image.strip()
         #print(imgList)
         ret.append(imgList)
     else:
