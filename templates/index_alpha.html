@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unlimigur</title>
+    <title>Infinimgur</title>
     <style>
         /* .zoom {
             padding: 50px;
@@ -40,47 +40,50 @@
             </tbody>
         </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='alpha.js')}}"></script>
     <script>
+
 var range = n => [...Array(n).keys()];
 const tr = document.createElement("tr");
-function showimage(imgurl)
-{
-    $("body").css("background-image","url(" + imgurl + ")"); // Onclick of button the background image of body will be test here. Give the image path in url
-    $('#clickbutton').hide(); //This will hide the button specified in html
-}
 async function load() {
-    // while (true) {
-        // for (var a in range(6)) {
-        let start = new Date().getTime();
-        let links = await fetch("/api/beta").then((res) => res.json());
-        let elapsed = new Date().getTime() - start;
+    let start = new Date().getTime();
+    let URL = await GenerateID();
+    let elapsed = new Date().getTime() - start;
+    console.log(URL);
+    if (URL === "Fuck you") {
+        return
+    } else {
         document.getElementById("floater").innerText = elapsed / 1000 + "s"; 
-        for (var link in links) {
-            let image = document.createElement("img");
-            let button = document.createElement("a");
-            //var split = links[link].split("s.jpg")[0]
-            image.src = links[link];
-            image.className = "zoom";
-            image.style = "object-fit: contain;";
-            image.setAttribute("data-enlargeable", "")
-            // image.attributes = "data-enlargeable";
-            image.width = "300";
-            image.height = "300";
-            button.onclick = "showimage(" + links[link] + ")";
-            // button.href = links[link];
-            // button.target = "_blank";
-            button.appendChild(image);
-            tr.appendChild(button);
-        };
+        let image = document.createElement("img");
+        let button = document.createElement("a");
+        image.src = URL;
+        image.className = "zoom";
+        image.style = "object-fit: contain;";
+        image.setAttribute("data-enlargeable", "")
+        image.width = "300";
+        image.height = "300";
+        button.onclick = "showimage(" + URL + ")";
+        button.appendChild(image);
+        tr.appendChild(button);
         document.getElementById("tbody").appendChild(tr);
-        // }
-        // await setTimeout(() => {console.log('1 second finished!')}, 1000);
+        let images = document.getElementsByTagName("img");
+    }
+    // for (let a in images) {
+    //     if (images[a].src == "https://i.imgur.com/removed.png") {
+    //         document.removeChild(images[a]);
+    //     }
     // }
-    // console.log(links);
-    // var j = links.json();
-    // console.log("resolved");
-    // console.log(j);
 }
+
+
+// setInterval(function () {
+//     load();
+// }, 1000)
+// GenerateID()
+// const globalData = {
+//   done: true
+// }
+
 const globalData = {
   done: true
 }
@@ -91,7 +94,7 @@ setInterval(async () => {
     await load()
     globalData.done = true
   }
-}, 200)
+}, 500)
     </script>
 </body>
 </html>
