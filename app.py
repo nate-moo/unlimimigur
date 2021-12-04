@@ -32,7 +32,10 @@ def beta():
 
 @app.route("/api/beta")
 def apiBeta():
-    return str(json.dumps(requestFastBeta(50)))
+    try:
+        return str(json.dumps(requestFastBeta(50)))
+    except Exception as e:
+        return str(json.dumps(requestFastBeta(25)))
 
 @app.route("/api")
 def api():

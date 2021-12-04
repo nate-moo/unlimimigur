@@ -92,7 +92,11 @@ const globalData = {
 setInterval(async () => {
   if (globalData.done) {
     globalData.done = false
-    await load()
+    try {
+        await load()
+    } catch (error) {
+        globalData.done = true
+    }
     globalData.done = true
   }
 }, 200)
