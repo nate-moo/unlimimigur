@@ -30,9 +30,17 @@ def alpha():
 def beta():
     return render_template("index_beta.html")
 
+@app.route("/beta7")
+def beta7():
+    return render_template("index_beta7.html")
+
 @app.route("/api/beta")
 def apiBeta():
     return str(json.dumps(requestFastBeta(50)))
+
+@app.route("/api/beta7")
+def apiBeta7():
+    return str(json.dumps(requestFastBeta7(50)))
 
 @app.route("/api")
 def api():
@@ -69,6 +77,35 @@ def requestFastBeta(itr):
 
     return rets
 
+def randIMGBeta7(rets):
+    terms = string.ascii_letters + string.digits
+    for a in range(20):
+        randList = str()
+        for a in range(6):
+            randList += terms[randrange(0,62)]
+        
+        link = "https://i.imgur.com/" + randList + ".jpeg"
+        ress = requests.head(link).status_code
+
+        if ress == 200:
+            rets.append(link)
+
+        # if ress != "https://i.imgur.com/removed.png":
+        #     if ress != "https://imgur.com/" + randList:
+        #         rets.append(ress)
+        #         # print(ress)
+
+def requestFastBeta7(itr):
+    threads = list()
+    rets = list()
+    for i in range(itr):
+        x = Thread(target=randIMGBeta7, args=(rets,))
+        threads.append(x)
+        x.start()
+    for index, thread in enumerate(threads):
+        thread.join()
+
+    return rets
 
 def randIMG(ret):
     imgList = str()

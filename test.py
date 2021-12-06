@@ -1,28 +1,42 @@
 import string
-import random
+from random import randrange
+import time
 import requests
 from threading import Thread
 
 terms = string.ascii_letters + string.digits
 
-def randIMGBeta(rets):
+def randIMGBeta6(rets):
+    terms = string.ascii_letters + string.digits
     for a in range(20):
         randList = str()
         for a in range(6):
-            randList += terms[random.randrange(0,62)]
+            randList += terms[randrange(0,62)]
         
         link = "https://i.imgur.com/" + randList + ".jpeg"
-        ress = requests.get(link).url
+        ress = requests.head(link).status_code
 
-        if ress != "https://i.imgur.com/removed.png":
-            if ress != "https://imgur.com/" + randList:
-                rets.append(ress)
+        if ress == 200:
+            rets.append(link)
 
-def requestFastBeta(itr):
+def randIMGBeta7(rets):
+    terms = string.ascii_letters + string.digits
+    for a in range(20):
+        randList = str()
+        for a in range(7):
+            randList += terms[randrange(0,62)]
+        
+        link = "https://i.imgur.com/" + randList + ".jpeg"
+        ress = requests.head(link).status_code
+
+        if ress == 200:
+            rets.append(link)
+
+def requestFastBeta6(itr):
     threads = list()
     rets = list()
     for i in range(itr):
-        x = Thread(target=randIMG, args=(rets,))
+        x = Thread(target=randIMGBeta6, args=(rets,))
         threads.append(x)
         x.start()
     for index, thread in enumerate(threads):
@@ -30,7 +44,25 @@ def requestFastBeta(itr):
 
     return rets
 
-print(requestFast(10))
+def requestFastBeta7(itr):
+    threads = list()
+    rets = list()
+    for i in range(itr):
+        x = Thread(target=randIMGBeta7, args=(rets,))
+        threads.append(x)
+        x.start()
+    for index, thread in enumerate(threads):
+        thread.join()
 
-    #res = link if ress != "https://i.imgur.com/removed.png" or ress != "https://imgur.com/" + randList else "None"
-    #print(res)
+    return rets
+
+if __name__ == "__main__":
+    t = time.time()
+    for i in range(10):
+        requestFastBeta6(20)
+    print("6 chars: " + str(time.time() - t))
+
+    t = time.time()
+    for i in range(10):
+        requestFastBeta7(20)
+    print("7 chars: " + str(time.time() - t))

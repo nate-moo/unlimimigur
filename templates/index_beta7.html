@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlimigur</title>
+    <style>
+        body {
+            background-color: black;
+            color:white;
+        }
+        /* .zoom {
+            padding: 50px;
+            background-color: green;
+            transition: transform .2s; Animation
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        } */
+        .zoom:hover {
+            transform: scale(1.5);
+        }
+        .float {
+            top: 0px;
+            right: 20px;
+            position: fixed;
+            z-index: 2;
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h3 id="floater" class="float">
+        
+    </h3>
+    <h1>
+        <button> <a href="/">Unlimigur</a> </button>
+        <button> <a href="/beta">Unlimigur Beta</a> </button>
+    </h1>
+
+        <table style="padding-left: 60px;">
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+var range = n => [...Array(n).keys()];
+const tr = document.createElement("tr");
+function showimage(imgurl)
+{
+    $("body").css("background-image","url(" + imgurl + ")"); // Onclick of button the background image of body will be test here. Give the image path in url
+    $('#clickbutton').hide(); //This will hide the button specified in html
+}
+async function load() {
+    // while (true) {
+        // for (var a in range(6)) {
+        let start = new Date().getTime();
+        let links = await fetch("/api/beta7").then((res) => res.json());
+        let elapsed = new Date().getTime() - start;
+        document.getElementById("floater").innerText = elapsed / 1000 + "s"; 
+        for (var link in links) {
+            let image = document.createElement("img");
+            let button = document.createElement("a");
+            //var split = links[link].split("s.jpg")[0]
+            image.src = links[link];
+            image.className = "zoom";
+            image.style = "object-fit: contain;";
+            image.setAttribute("data-enlargeable", "")
+            // image.attributes = "data-enlargeable";
+            image.width = "300";
+            image.height = "300";
+            button.onclick = "showimage(" + links[link] + ")";
+            // button.href = links[link];
+            // button.target = "_blank";
+            button.appendChild(image);
+            tr.appendChild(button);
+        };
+        document.getElementById("tbody").appendChild(tr);
+        // }
+        // await setTimeout(() => {console.log('1 second finished!')}, 1000);
+    // }
+    // console.log(links);
+    // var j = links.json();
+    // console.log("resolved");
+    // console.log(j);
+}
+const globalData = {
+  done: true
+}
+
+setInterval(async () => {
+  if (globalData.done) {
+    globalData.done = false
+    try {
+        await load()
+    } catch (error) {
+        globalData.done = true
+    }
+    globalData.done = true
+  }
+}, 200)
+    </script>
+</body>
+</html>
