@@ -40,7 +40,7 @@ def apiBeta():
 
 @app.route("/api/beta7")
 def apiBeta7():
-    return str(json.dumps(requestFastBeta7(50)))
+    return str(json.dumps(requestFastBeta7(25)))
 
 @app.route("/api")
 def api():
