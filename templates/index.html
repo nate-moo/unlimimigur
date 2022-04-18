@@ -17,7 +17,15 @@
             z-index: 2;
             background-color: gray;
         }
-
+	.banner {
+	    width: 100%;
+	    background-color: #662222;
+	}
+	.bannerText {
+	    color: #FFF;
+	    margin: 1rem;
+	    text-align: center;
+	}
     </style>
 </head>
 <body>
@@ -25,14 +33,21 @@
         
     </h3>
     <h1>
-        <button> <a href="/">Unlimigur</a> </button>
+	<div class="banner" id="banner" hidden>
+	    <h1 class="bannerText"> New domain for site: <a href="https://unlimigur.com">https://unlimigur.com</a></h1>
+	</div>
+	<button> <a href="/">Unlimigur</a> </button>
         <button> <a href="/beta">Unlimigur Beta</a> </button>
     </h1>
-        <table>
+
+    <table>
             <tbody id="tbody">
             </tbody>
         </table>
     <script>
+if (window.location.hostname != "unlimigur.com") {
+    document.querySelector("#banner").hidden = false;
+}
 var range = n => [...Array(n).keys()];
 var tr = document.createElement("tr");
 async function load() {
