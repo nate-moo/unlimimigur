@@ -35,8 +35,12 @@
         
     </h3>
     <h1>
+        <div class="banner" id="banner" hidden>
+            <h1 class="bannerText"> New domain for site: <a href="https://unlimigur.com">https://unlimigur.com</a></h1>
+        </div>
         <button> <a href="/">Unlimigur</a> </button>
         <button> <a href="/beta">Unlimigur Beta</a> </button>
+        <button> <a href="https://github.com/nate-moo/unlimimigur">Source Code</a></button>
     </h1>
 
         <table style="padding-left: 60px;">
@@ -45,6 +49,9 @@
         </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
+if (window.location.hostname != "unlimigur.com") {
+    document.querySelector("#banner").hidden = false;
+}
 var range = n => [...Array(n).keys()];
 const tr = document.createElement("tr");
 function showimage(imgurl)
