@@ -58,7 +58,7 @@
         </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script>
-if (window.location.hostname != "unlimigur.com") {
+if (window.location.hostname.search("unlimigur.com") == -1) {
     document.querySelector("#banner").hidden = false;
 }
 var range = n => [...Array(n).keys()];
