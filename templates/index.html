@@ -46,7 +46,7 @@
             </tbody>
         </table>
     <script>
-if (window.location.hostname != "unlimigur.com") {
+if (window.location.hostname.search("unlimigur.com") == 0) {
     document.querySelector("#banner").hidden = false;
 }
 var range = n => [...Array(n).keys()];
